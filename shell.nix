@@ -1,5 +1,5 @@
 let
-  nix_channel = "23.05";
+  nix_channel = "23.11";
   rust_overlay = import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz");
   pkgs = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/refs/tags/${nix_channel}.tar.gz") {
     overlays = [ rust_overlay ];
