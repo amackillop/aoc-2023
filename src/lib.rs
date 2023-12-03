@@ -10,21 +10,21 @@ use std::{
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 #[derive(PartialEq, Eq, Debug)]
-pub struct Solution {
+pub struct Solution<T: Display> {
     day: u8,
-    part_1: i32,
-    part_2: i32,
+    part_1: T,
+    part_2: T,
 }
 
-impl Display for Solution {
+impl <T: Display> Display for Solution<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
             "~~~~~~~~~~~~~~~ Day {} ~~~~~~~~~~~~~~~",
             self.day as isize
         )?;
-        writeln!(f, "Part 1: {:?}", self.part_1)?;
-        writeln!(f, "Part 2: {:?}", self.part_2)?;
+        writeln!(f, "Part 1: {}", self.part_1)?;
+        writeln!(f, "Part 2: {}", self.part_2)?;
         Ok(())
     }
 }

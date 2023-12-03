@@ -12,7 +12,7 @@ use nom::{
     IResult,
 };
 
-pub fn solution() -> Result<Solution> {
+pub fn solution() -> Result<Solution<i32>> {
     let day = 1;
     let part_1 = sum_of_calibration_values(day, part_1_parser)?;
     let part_2 = sum_of_calibration_values(day, part_2_parser)?;

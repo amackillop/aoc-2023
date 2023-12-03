@@ -63,7 +63,7 @@ impl Game {
     }
 }
 
-pub fn solution() -> Result<Solution> {
+pub fn solution() -> Result<Solution<i32>> {
     let day = 2;
     let cube_counts = CubeCount {
         red: 12,
