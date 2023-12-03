@@ -133,15 +133,15 @@ mod tests {
     }
 
     #[test]
-    fn test_solution() {
-        let solution = solution().unwrap();
+    fn test_solution() -> Result<()> {
         assert_eq!(
-            solution,
+            solution()?,
             Solution {
                 day: 1,
                 part_1: 55477,
                 part_2: 54431
             }
         );
+        Ok(())
     }
 }

@@ -140,63 +140,82 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_colour() {
-        assert_eq!(cube("red"), Ok(("", Cube::Red)));
-        assert_eq!(cube("green"), Ok(("", Cube::Green)));
-        assert_eq!(cube("blue"), Ok(("", Cube::Blue)));
+    fn test_colour() -> Result<()> {
+        assert_eq!(cube("red")?.1, Cube::Red);
+        assert_eq!(cube("green")?.1, Cube::Green);
+        assert_eq!(cube("blue")?.1, Cube::Blue);
+        Ok(())
     }
 
     #[test]
-    fn test_colour_count() {
-        assert_eq!(cube_count("1 red"), Ok(("", (Cube::Red, 1))));
-        assert_eq!(cube_count("2 green"), Ok(("", (Cube::Green, 2))));
-        assert_eq!(cube_count("3 blue"), Ok(("", (Cube::Blue, 3))));
+    fn test_colour_count() -> Result<()> {
+        assert_eq!(cube_count("1 red")?.1, (Cube::Red, 1));
+        assert_eq!(cube_count("2 green")?.1, (Cube::Green, 2));
+        assert_eq!(cube_count("3 blue")?.1, (Cube::Blue, 3));
+        Ok(())
     }
 
     #[test]
-    fn test_round() {
+    fn test_round() -> Result<()> {
         assert_eq!(
-            round("3 blue, 4 red"),
-            Ok((
-                "",
+            round("3 blue, 4 red")?.1,
+            Round {
+                red: 4,
+                green: 0,
+                blue: 3,
+            }
+        );
+        assert_eq!(
+            round("1 red, 2 green, 6 blue")?.1,
+            Round {
+                red: 1,
+                green: 2,
+                blue: 6,
+            }
+        );
+        assert_eq!(
+            round("2 green")?.1,
+            Round {
+                red: 0,
+                green: 2,
+                blue: 0,
+            }
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_rounds() -> Result<()> {
+        assert_eq!(
+            rounds("3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")?.1,
+            vec![
                 Round {
                     red: 4,
                     green: 0,
                     blue: 3,
-                }
-            ))
-        );
-        assert_eq!(
-            round("1 red, 2 green, 6 blue"),
-            Ok((
-                "",
+                },
                 Round {
                     red: 1,
                     green: 2,
                     blue: 6,
-                }
-            ))
-        );
-        assert_eq!(
-            round("2 green"),
-            Ok((
-                "",
+                },
                 Round {
                     red: 0,
                     green: 2,
                     blue: 0,
-                }
-            ))
+                },
+            ]
         );
+        Ok(())
     }
 
     #[test]
-    fn test_rounds() {
+    fn test_game() -> Result<()> {
         assert_eq!(
-            rounds("3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"),
-            Ok((
-                "",
-                vec![
+            game("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")?.1,
+            Game {
+                id: 1,
+                rounds: vec![
                     Round {
                         red: 4,
                         green: 0,
@@ -213,38 +232,9 @@ mod tests {
                         blue: 0,
                     },
                 ]
-            ))
+            }
         );
-    }
-
-    #[test]
-    fn test_game() {
-        assert_eq!(
-            game("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"),
-            Ok((
-                "",
-                Game {
-                    id: 1,
-                    rounds: vec![
-                        Round {
-                            red: 4,
-                            green: 0,
-                            blue: 3,
-                        },
-                        Round {
-                            red: 1,
-                            green: 2,
-                            blue: 6,
-                        },
-                        Round {
-                            red: 0,
-                            green: 2,
-                            blue: 0,
-                        },
-                    ]
-                }
-            ))
-        );
+        Ok(())
     }
 
     #[test]
@@ -331,15 +321,15 @@ mod tests {
     }
 
     #[test]
-    fn test_solution() {
-        let solution = solution().unwrap();
+    fn test_solution() -> Result<()> {
         assert_eq!(
-            solution,
+            solution()?,
             Solution {
                 day: 2,
                 part_1: 2545,
                 part_2: 78111
             }
         );
+        Ok(())
     }
 }
