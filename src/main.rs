@@ -12,6 +12,7 @@ fn main() -> Result<()> {
     match args.day {
         1 => println!("{}", aoc_2023::day_1::solution()?),
         2 => println!("{}", aoc_2023::day_2::solution()?),
+        3 => println!("{}", aoc_2023::day_3::solution()?),
         _ => println!("Day {} not implemented", args.day),
     }
     Ok(())
