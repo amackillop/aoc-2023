@@ -36,11 +36,11 @@ fn sum_of_calibration_values(day: u8, line_parser: impl Fn(&str) -> Vec<i32>) ->
 }
 
 fn part_1_parser(input: &str) -> Vec<i32> {
-    find_all(single_digit)(input).unwrap().1
+    find_all_overlapping(single_digit)(input).unwrap().1
 }
 
 fn part_2_parser(input: &str) -> Vec<i32> {
-    find_all(spelled_or_literal_digit)(input).unwrap().1
+    find_all_overlapping(spelled_or_literal_digit)(input).unwrap().1
 }
 
 fn spelled_or_literal_digit(input: &str) -> IResult<&str, i32> {
@@ -66,23 +66,23 @@ fn spelled_digit(input: &str) -> IResult<&str, i32> {
     ))(input)
 }
 
-pub fn find_all<'a, T>(
+fn find_all_overlapping<'a, T>(
     parser: impl Fn(&'a str) -> IResult<&str, T>,
 ) -> impl FnMut(&'a str) -> IResult<&'a str, Vec<T>> {
     move |input| {
-        let mut digits = vec![];
+        let mut matches = vec![];
         let mut input = input;
 
-        while let Ok((remainder, maybe_digit)) = opt(&parser)(input) {
-            if let Some(digit) = maybe_digit {
-                digits.push(digit);
+        while let Ok((remainder, maybe_match)) = opt(&parser)(input) {
+            if let Some(match_) = maybe_match {
+                matches.push(match_);
             }
             if remainder.is_empty() {
                 break;
             }
             input = &input[1..];
         }
-        Ok(("", digits))
+        Ok(("", matches))
     }
 }
 

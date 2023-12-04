@@ -49,12 +49,12 @@ impl Game {
 
     fn min_cube_count(&self) -> CubeCount {
         self.rounds.iter().fold(
-            Round {
+            CubeCount {
                 red: i32::MIN,
                 green: i32::MIN,
                 blue: i32::MIN,
             },
-            |min_count, round| Round {
+            |min_count, round| CubeCount {
                 red: min_count.red.max(round.red),
                 green: min_count.green.max(round.green),
                 blue: min_count.blue.max(round.blue),
