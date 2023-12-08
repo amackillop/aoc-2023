@@ -198,17 +198,18 @@ fn parse_schematic(input: &str) -> IResult<&str, Schematic> {
 
 fn find_all_indexed<'a, T>(
     parser: impl Fn(&'a str) -> IResult<&str, T>,
-) -> impl FnMut(&'a str) -> IResult<&'a str, Vec<(T, usize)>> {
-    move |input| {
+) -> impl FnMut(&'a str) -> IResult<&str, Vec<(T, usize)>>
+where
+{
+    move |mut input| {
         let mut matches = vec![];
-        let mut input = input;
         let mut index = 0;
 
         while let Ok((remainder, maybe_match)) = opt(&parser)(input) {
             if let Some(match_) = maybe_match {
                 matches.push((match_, index));
                 index += input.len() - remainder.len();
-                input = &remainder;
+                input = remainder;
             } else {
                 if remainder.is_empty() {
                     break;
@@ -312,16 +313,16 @@ mod tests {
         let sym_index = build_index(&symbols);
 
         let expected = [
-            vec![&symbols[0]], // 467
+            vec![&symbols[0]], // 467, *
             vec![],            // 114
-            vec![&symbols[0]], // 35
-            vec![&symbols[1]], // 633
-            vec![&symbols[2]], // 617
+            vec![&symbols[0]], // 35, *
+            vec![&symbols[1]], // 633, #
+            vec![&symbols[2]], // 617, *
             vec![],            // 58
-            vec![&symbols[3]], // 592
-            vec![&symbols[5]], // 755
-            vec![&symbols[4]], // 664
-            vec![&symbols[5]], // 598
+            vec![&symbols[3]], // 592, +
+            vec![&symbols[5]], // 755, *
+            vec![&symbols[4]], // 664, $
+            vec![&symbols[5]], // 598, *
         ];
         for (index, number) in enumerate(&numbers) {
             assert_eq!(adjacent_symbols(&sym_index, number), expected[index]);
