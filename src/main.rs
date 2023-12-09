@@ -14,6 +14,7 @@ fn main() -> Result<()> {
         2 => println!("{}", aoc_2023::day_2::solution()?),
         3 => println!("{}", aoc_2023::day_3::solution()?),
         4 => println!("{}", aoc_2023::day_4::solution()?),
+        5 => println!("{}", aoc_2023::day_5::solution()?),
         _ => println!("Day {} not implemented", args.day),
     }
     Ok(())
