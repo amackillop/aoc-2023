@@ -20,7 +20,7 @@ pub fn solution() -> Result<Solution<u64>> {
 
     let part_1 = seeds
         .iter()
-        .map(|seed| almanac.get(*seed))
+        .map(|seed| almanac.get_location(*seed))
         .min()
         .unwrap();
 
@@ -29,7 +29,7 @@ pub fn solution() -> Result<Solution<u64>> {
         .map(|pair| {
             let [range_start, range_length] = pair else { panic!() };
             (*range_start..(*range_start+*range_length)).into_par_iter().map(|seed| {
-                almanac.get(seed)
+                almanac.get_location(seed)
             }).min().unwrap()
         }).min().unwrap();
 
@@ -45,8 +45,8 @@ struct Almanac {
 }
 
 impl Almanac {
-    fn get(&self, key: u64) -> u64 {
-        self.maps.iter().fold(key, |key, map| map.get(key))
+    fn get_location(&self, seed: u64) -> u64 {
+        self.maps.iter().fold(seed, |key, map| map.get(key))
     }
 }
 
